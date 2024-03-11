@@ -5,10 +5,22 @@ import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import Colors from './constants/colors';
 import GameOverScreen from './screens/GameOverScreen';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 export default function App() {
   const [userVal, setUserVal] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [guessRounds, setGuessRounds] = useState(0);
+
+  const [fontsLoaded] = useFonts({
+    'open-sans': require('./assets/images/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/images/fonts/OpenSans-Bold.ttf'),
+  });
+
+  if (!fontsLoaded){
+    return <AppLoading />;
+  }
   
   function pickedValHandler(pickedVal){
     setUserVal(pickedVal);
@@ -19,6 +31,11 @@ export default function App() {
     setGameIsOver(true);
   }
 
+  function startNewGameHandler(){
+    setUserVal(null);
+    setGuessRounds(0);
+  }
+
 
   let screen = <StartGameScreen onPickVal={pickedValHandler}/>
 
@@ -27,7 +44,7 @@ export default function App() {
   }
 
   if (gameIsOver && userVal){
-    screen = <GameOverScreen />
+    screen = <GameOverScreen userVal={userVal} roundsNumber={guessRounds} onStartNewGame={startNewGameHandler}/>
   }
 
 
