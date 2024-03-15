@@ -24,7 +24,7 @@ let maxBoundary = 100;
 function GameScreen({userVal, onGameOver}){
     const initialGuess = generateRandomBetween(1, 100, userVal);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
-    const [guessRounds, setGuessRounds] = useState([initialGuess]);
+    const [guessRounds, setGuessRounds] = useState([initialGuess]); //useState to contain flatlist values
 
     useEffect(() => {
         if(currentGuess === userVal){
@@ -49,7 +49,7 @@ function GameScreen({userVal, onGameOver}){
         }
         const newRd = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
         setCurrentGuess(newRd);
-        setGuessRounds(prevGuessRounds => [newRd, ...prevGuessRounds])
+        setGuessRounds(prevGuessRounds => [newRd, ...prevGuessRounds]) //flatlist function call
     }
 
     const guessRoundsListLength = guessRounds.length;
@@ -75,7 +75,7 @@ function GameScreen({userVal, onGameOver}){
             </View>
         </Card>
             <View style={styles.listContainer}>
-            {/* {guessRounds.map(guessRound => <Text key={guessRound}>{guessRound}</Text>)} */}
+                {/* flatlist implementation */}
                 <FlatList 
                 data={guessRounds} 
                 renderItem={(itemData) => <GuessLogItem roundNumber={guessRoundsListLength - itemData.index} guess={itemData.item} />} 
